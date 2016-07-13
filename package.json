@@ -1,0 +1,33 @@
+{
+	"name": "NodejsStarterApp",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+         "body-parser": "~1.14.1",
+         "express": "~4.13.3",
+         "express-rate-limit": "^2.0.2",
+         "express-secure-only": "^0.2.1",
+         "helmet": "^2.0.0",
+         "watson-developer-cloud": "^1.0.6",
+         "fs": "*",
+         "requirejs": "*",
+         "jquery": "*",
+         "pubsub-js": "*",
+         "nano": "*",
+         "cloudant": "*",
+         "aliasify": "*",
+         "querystring-browser": "*"
+	},
+	"repository": {},
+	"engines": {
+		"node": "4.x"
+	},
+	"aliasify": {
+  		"aliases": {
+    	"querystring": "querystring-browser"
+  	}
+}
+}

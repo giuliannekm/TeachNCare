@@ -1,0 +1,332 @@
+<dialog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WatsonDialogDocument_1.0.xsd">
+    <flow>
+        <folder label="Main" id="Main">
+        	<output>
+        		<prompt selectionType="RANDOM">
+        			<item>Welcome, how can I help you?</item>
+        		</prompt>
+        		<goto ref="getUserInput_2449614"/>
+        	</output>
+        	<getUserInput id="getUserInput_2449614">
+        		<search ref="folder_2449611"/>
+        		<default>
+        			<output>
+        				<prompt selectionType="RANDOM">
+        					<item> I am sorry, I did not understand your question. </item>
+        				</prompt>
+        			</output>
+        		</default>
+        	</getUserInput>
+        </folder>
+        <folder label="Library" id="Library">
+            <folder label="Live Content" id="folder_2449611">
+            	<input>
+            		<grammar>
+            			<item>What time is my class</item>
+            			<item>What time is the class</item>
+            			<item>When is my class</item>
+            			<item>When is the class</item>
+            			<item>When * (Discipline)={discipline} * (Year)={year} * </item>
+               			<item>When * (Discipline)={discipline} * (Year)={year} * </item>
+            			<item>What hour * (Discipline)={discipline} * (Year)={year} * </item>
+            			<item>What time * (Discipline)={discipline} * (Year)={year} * </item>
+            			<item>When * (Discipline)={discipline} * </item>
+               			<item>When * (Discipline)={discipline} * </item>
+            			<item>What hour * (Discipline)={discipline} * </item>
+            			<item>What time * (Discipline)={discipline} * </item>
+            		</grammar>
+            		<action varName="subject" operator ="SET_TO">time</action>
+            		<action varName="discipline" operator="SET_TO">{discipline.value:main}</action>
+            		<action varName="year" operator="SET_TO">{year.value:main}</action>
+            		<if id="profileCheck_2469744">
+            			<cond varName="discipline" operator="HAS_VALUE"/>
+            			<if>
+            				<cond varName="year" operator="HAS_VALUE"/>
+                            <action varName="search_now" operator="SET_TO_YES"/>
+            			</if>
+            			<output>
+                            <action varName="search_now" operator="SET_TO_NO"/>
+            				<prompt selectionType="RANDOM">
+            					<item>For what grade do you want to know?</item>
+                                <item>Ok, for what year?</item>
+                                <item>Nice, what is your grade?</item>
+                                <item>What is your year?</item>
+            				</prompt>
+            				<getUserInput>
+                           		<input>
+                            		<grammar>
+                                		<item>$ (Year)={year}</item>
+                            		</grammar>
+                                	<output>
+                                		<action varName="year" operator="SET_TO">{year.value:main}</action>
+                                    	<goto ref="profileCheck_2469744"/>
+                                	</output>
+                            	</input>
+                            	<default>
+        							<output>
+        								<prompt selectionType="RANDOM">
+        									<item> I am sorry. Only ninth to twelfth grades are available.</item>
+        								</prompt>
+        							</output>
+        						</default>
+                        	</getUserInput>
+            			</output>
+            		</if>
+            		<output>
+                        <action varName="search_now" operator="SET_TO_NO"/>
+            			<prompt selectionType="RANDOM">
+            				<item>For what discipline do you want to know?</item>
+                            <item>What discipline are you interested about?</item>
+                            <item>Ok, for what discipline?</item>
+                            <item>Nice, what is your discipline?</item>
+                            <item>What is your discipline?</item>                            
+            			</prompt>
+            			<getUserInput>
+                           	<input>
+                            	<grammar>
+                                	<item>$ (Discipline)={discipline}</item>
+                            	</grammar>
+                                <action varName="discipline" operator="SET_TO">{discipline.value:main}</action>
+                                <goto ref="profileCheck_2469744"/>
+                            </input>
+                            <default>
+        						<output>
+        							<prompt selectionType="RANDOM">
+        								<item> I am sorry. I don't know this discipline.</item>
+        							</prompt>
+        						</output>
+        					</default>
+                        </getUserInput>
+            		</output>
+            	</input>
+                <input>
+                    <grammar>
+                        <item>What * (DisciplineKind)={discipline_kind} * (Year)={year} * </item>
+                        <item>Which * (DisciplineKind)={discipline_kind} * (Year)={year} * </item>
+                        <item>What * (DisciplineKind)={discipline_kind} * </item>
+                        <item>Which * (DisciplineKind)={discipline_kind} * </item>
+                    </grammar>
+                    <action varName="subject" operator ="SET_TO">discipline_kind</action>
+                    <action varName="discipline_kind" operator="SET_TO">{discipline_kind.value:main}</action>
+                    <action varName="year" operator="SET_TO">{year.value:main}</action>
+                    <if id="profileCheck_2469745">
+                        <cond varName="discipline_kind" operator="HAS_VALUE"/>
+                        <if>
+                            <cond varName="year" operator="HAS_VALUE"/>
+                            <action varName="search_now" operator="SET_TO_YES"/>
+                        </if>
+                        <output>
+                            <action varName="search_now" operator="SET_TO_NO"/>
+                            <prompt selectionType="RANDOM">
+                                <item>For what grade do you want to know?</item>
+                                <item>Ok, for what year?</item>
+                                <item>Nice, what is your grade?</item>
+                                <item>What is your year?</item>
+                            </prompt>
+                            <getUserInput>
+                                <input>
+                                    <grammar>
+                                        <item>$ (Year)={year}</item>
+                                    </grammar>
+                                    <output>
+                                        <action varName="year" operator="SET_TO">{year.value:main}</action>
+                                        <goto ref="profileCheck_2469745"/>
+                                    </output>
+                                </input>
+                                <default>
+                                    <output>
+                                        <prompt selectionType="RANDOM">
+                                            <item> I am sorry. Only ninth to twelfth grades are available.</item>
+                                        </prompt>
+                                    </output>
+                                </default>
+                            </getUserInput>
+                        </output>
+                    </if>
+                    <output>
+                        <action varName="search_now" operator="SET_TO_NO"/>
+                        <prompt selectionType="RANDOM">
+                            <item>Do you want to know the mandatory or optional?</item>
+                        </prompt>
+                        <getUserInput>
+                            <input>
+                                <grammar>
+                                    <item>$ (DisciplineKind)={discipline_kind}</item>
+                                </grammar>
+                                <output>
+                                    <action varName="discipline_kind" operator="SET_TO">{discipline_kind.value:main}</action>
+                                    <goto ref="profileCheck_2469745"/>
+                                </output>
+                            </input>
+                            <default>
+                                <output>
+                                    <prompt selectionType="RANDOM">
+                                        <item>You have to choose between mandatory or optional.</item>
+                                    </prompt>
+                                </output>
+                            </default>
+                        </getUserInput>
+                    </output>
+                </input>
+            </folder>
+            <folder label="Storage" id="Storage"></folder>
+        </folder>
+        <folder label="Concepts" id="Concepts"></folder>
+    </flow>
+    <entities>
+        <entity name="DisciplineKind">
+        <value name="Mandatory" value="Mandatory">
+                <grammar>
+                    <item>mandate</item>
+                    <item>obligation</item>
+                    <item>obrigatory</item>
+                </grammar>
+            </value>
+            <value name="Optional" value="Optional">
+                <grammar>
+                    <item>options</item>
+                    <item>option</item>
+                    <item>opt</item>
+                </grammar>
+            </value>
+        </entity>
+	    <entity name="Discipline">
+	     	<value name="Math" value="Math">
+	        	<grammar>
+	            	<item>maths</item>
+	            	<item>mathematics</item>
+	             	<item>mathematic</item>
+	         	</grammar>
+	        </value>
+	        <value name="History" value="History">
+	            <grammar>
+	            	<item>historic</item>
+	                <item>hist</item>
+                    <item>historical</item>
+	            </grammar>
+	        </value>
+            <value name="English" value="English">
+                <grammar>
+                    <item>eng</item>
+                    <item>england</item>
+                </grammar>
+            </value>
+            <value name="Chemistry" value="Chemistry">
+                <grammar>
+                    <item>chem</item>
+                    <item>chemical</item>
+                    <item>chemicals</item>
+                    <item>chemistries</item>
+                </grammar>
+            </value>
+            <value name="Science" value="Science">
+                <grammar>
+                    <item>scientific</item>
+                    <item>sciences</item>
+                    <item>scientifical</item>
+                </grammar>
+            </value>
+            <value name="Physical Education" value="Physical Education">
+                <grammar>
+                    <item>PE</item>
+                    <item>Physical Educational</item>
+                </grammar>
+            </value>
+            <value name="Lecture" value="Lecture">
+                <grammar>
+                    <item>lecturing</item>
+                    <item>lect</item>
+                </grammar>
+            </value>
+            <value name="Physics" value="Physics">
+                <grammar>
+                    <item>physic</item>
+                    <item>psych</item>
+                    <item>physicist</item>
+                </grammar>
+            </value>
+            <value name="Art lessons" value="Art lessons">
+                <grammar>
+                    <item>art</item>
+                    <item>artistical</item>
+                    <item>artistic</item>
+                    <item>arts</item>
+                </grammar>
+            </value>
+            <value name="Computer lessons" value="Computer lessons">
+                <grammar>
+                    <item>computation</item>
+                    <item>computers</item>
+                    <item>computer</item>
+                    <item>computing</item>
+                </grammar>
+            </value>
+	    </entity>
+	    <entity name="Year">
+	     	<value name="Ninth" value="Ninth">
+	        	<grammar>
+	            	<item>nine</item>
+	            	<item>nines</item>
+	             	<item>nint</item>
+	         	</grammar>
+	        </value>
+	        <value name="Tenth" value="Tenth">
+	            <grammar>
+	            	<item>ten</item>
+	                <item>tens</item>
+	                <item>tent</item>
+	            </grammar>
+	        </value>
+	        <value name="Eleventh" value="Eleventh">
+	            <grammar>
+	            	<item>eleven</item>
+	                <item>elevent</item>
+	                <item>eleve</item>
+	            </grammar>
+	        </value>
+	        <value name="Twelfth" value="Twelfth">
+	            <grammar>
+	            	<item>twelve</item>
+	                <item>twenty</item>
+	                <item>twen</item>
+	                <item>twenlft</item>
+	                <item>theft</item>
+	            </grammar>
+	        </value>
+	    </entity>
+	</entities>
+    <variables>
+        <var_folder name="Home">
+            <var name="subject" type="TEXT"/>
+            <var name="discipline" type="TEXT"/>
+            <var name="year" type="TEXT"/>
+            <var name="search_now" type="YESNO"/>
+            <var name="discipline_kind" type="TEXT"/>
+        </var_folder>
+    </variables>
+</dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
